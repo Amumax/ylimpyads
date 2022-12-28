@@ -1,0 +1,26 @@
+{
+  "name": "scarper",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node --experimental-modules src/index.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "got": "^12.5.2",
+    "jsdom": "^16.2.2",
+    "mysql": "^2.18.1",
+    "node-fetch": "^2.6.1",
+    "pg": "^8.8.0",
+    "sequelize": "^6.25.3",
+    "sleep": "^6.3.0",
+    "sqlite3": "^5.1.2",
+    "sqlstring": "^2.3.3",
+    "ydb-sdk": "^3.4.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
