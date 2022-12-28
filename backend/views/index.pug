@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Olimps
+    body
+        h1 Welcome to olimpiads
+        <a href="/olimpiad/create">Создать</a>
+        table
+            thead
+                td Имя
+                td URL
+                td Уровень
+                td Рейтинг
+            each o in olimpiads
+                tr
+                    td <a href="/olimpiad/#{o.id}">#{o.name}</a>
+                    td #{o.url}
+                    td #{o.level}
+                    td #{o.rating}

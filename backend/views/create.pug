@@ -1,0 +1,26 @@
+doctype html
+html
+    head
+        title Новая олимпиада
+    style
+    body
+        h1 Новая олимпиада
+        form(method="POST" action="/olimpiad")
+            table
+                tr
+                    td Название
+                    td
+                        input(type="text" name="name")
+                tr
+                    td URL
+                    td
+                        input(type="text" name="url")
+                tr
+                    td Уровень
+                    td
+                        input(type="number" name="level")
+                tr
+                    td Рейтинг
+                    td
+                        input(type="number" name="rating")
+            button(type="submit") Создать

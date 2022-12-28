@@ -1,0 +1,26 @@
+doctype html
+html
+    head
+        title #{name}
+    style
+    body
+        h1 Редактирование #{name}
+        form(method="POST" action="/olimpiad/"+id)
+            table
+                tr
+                    td Название
+                    td
+                        input(type="text" name="name" value=name)
+                tr
+                    td URL
+                    td
+                        input(type="text" name="url" value=url)
+                tr
+                    td Уровень
+                    td
+                        input(type="number" name="level" value=level)
+                tr
+                    td Рейтинг
+                    td
+                        input(type="number" name="rating" value=rating)
+            button(type="submit") Сохранить

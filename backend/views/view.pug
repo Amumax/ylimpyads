@@ -1,0 +1,26 @@
+doctype html
+html
+    head
+        title #{name}
+    style
+    body
+        h1 #{name}
+        table
+            tr
+                td Название
+                td #{name}
+            tr
+                td URL
+                td #{url}
+            tr
+                td Уровень
+                td #{level}
+            tr
+                td Рейтинг
+                td #{rating}
+            tr
+                td
+                    <a href="/olimpiad/#{id}/edit">Редактировать</a>
+                td
+
+        <a href="/olimpiad">Вернуться к списку</a>
