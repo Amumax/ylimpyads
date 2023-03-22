@@ -34,16 +34,14 @@ export const OlimpiadSmallShow = () => (
         </ReferenceArrayField>
     </SimpleShowLayout>
 );
-export const OlimpiadList = () => (
-    <List filters={OlimpiadFilters}>
+export const OlimpiadList = () => {
+    console.log("Trying to make a proper sort");
+    return <List filters={OlimpiadFilters} sort={{field: "name", order: "ASC"}}>
         <Datagrid rowClick="show" expand={OlimpiadSmallShow}>
-            {/* <TextField source="id" /> */}
             <TextField source="name" label="Полное название"/>
             <UrlField source="url" />
             <NumberField source="rating" label="Место в рейтинге"/>
             <NumberField source="level" label="Уровень олимпиады"/>
-            {/* <ReferenceArrayField source="hostIds" reference="hosts" label="Организаторы"/>
-            <ReferenceArrayField source="eventIds" reference="events" label="События"/> */}
             <ReferenceArrayField source="classIds" reference="classes" label="Предметы">
                 <SingleFieldList>
                     <ChipField source="name" sx={{ wordWrap: 'break-word', width: '100px' }} />
@@ -57,7 +55,7 @@ export const OlimpiadList = () => (
             <EditButton />
         </Datagrid>
     </List>
-);
+};
 
 export const OlimpiadEdit = () => (
     <Edit title={<OlimpiadTitle/>}>
@@ -117,6 +115,8 @@ export const OlimpiadShow = () => (
             </ReferenceArrayField>
             <ReferenceArrayField source="profileIds" reference="profiles">
 
+            </ReferenceArrayField>
+            <ReferenceArrayField source="gradeIds" reference="grades">
             </ReferenceArrayField>
         </SimpleShowLayout>
     </Show>

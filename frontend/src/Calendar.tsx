@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts'
 import { Loading, useDataProvider, useGetList } from 'react-admin';
 import crudProvider from 'ra-data-nestjsx-crud'
@@ -17,10 +17,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import Chip from '@mui/material/Chip';
 import Checkbox from '@mui/material/Checkbox';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Collapse from '@mui/material/Collapse';
+import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
 interface ScheduleDto {
     day: string;
     olimps: string[];
@@ -80,12 +85,12 @@ const profiles = await fetch(API_URL+`/profiles`)
     .then((res: GenericMap[]) => res);
 
 const CustomTooltip = (tip:any) => {
-     if (tip.value === undefined) return null
-        return (
-            <span style={{ color: tip.color, backgroundColor: 'black', padding: '10px' }}>
-                {tip.day} : {tip.value} событий
-            </span>
-        )
+      if (tip.value === undefined) return null;
+      return (
+          <span style={{ color: tip.color, backgroundColor: 'black', padding: '10px' }}>
+              {tip.day} : {tip.value} событий
+          </span>
+      )
     };
 const russianMonths = [
     'Явн',
@@ -294,6 +299,53 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 //     );
 // };
 
+function Row(props: { row: typeof Event}) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <React.Fragment>
+        {/* <TableRow
+          key={row.id}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        > */}
+
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <a href={'/admin/olimpiads/'+row.olimpiad.id+'/show'}>{row.olimpiad.name}</a>
+        </TableCell>
+        <TableCell align="right">{row.name}</TableCell>
+        <TableCell align="right">{row.start.toString()}</TableCell>
+        <TableCell align="right">{row.finish.toString()}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                Детали
+              </Typography>
+              <Typography component="legend">Уровень</Typography>
+              <Rating name="read-only" value={4 - row.olimpiad.level}  max={3} readOnly />
+              <Typography component="legend">Рейтинг</Typography>
+              <Rating name="read-only" value={(row.olimpiad.rating/81)} precision={0.1} max={10} readOnly />
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+}
+
 const MyResponsiveCalendarCanvas = () => {
     const [selectedDay, selectedDayChange] = useState('2022-09-01');
     const [eventsForDay, eventsChanged] = useState<Event[]>([]);
@@ -412,6 +464,7 @@ const MyResponsiveCalendarCanvas = () => {
         onClick={(d, event) => {
             selectedDayChange(d.day);
             console.log(olimpiads);
+            eventsChanged([])
             fetchEvents(d.day, olimpiads).then(rows => eventsChanged(rows));
         }}
         legends={[
@@ -433,6 +486,7 @@ const MyResponsiveCalendarCanvas = () => {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
+              <TableCell></TableCell>
               <TableCell>Олимпиада</TableCell>
               <TableCell align="right">Событие</TableCell>
               <TableCell align="right">Начало</TableCell>
@@ -441,17 +495,7 @@ const MyResponsiveCalendarCanvas = () => {
           </TableHead>
           <TableBody>
             {eventsForDay.map(row => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  <a href={'/admin/olimpiads/'+row.olimpiad.id+'/show'}>{row.olimpiad.name}</a>
-                </TableCell>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.start.toString()}</TableCell>
-                <TableCell align="right">{row.finish.toString()}</TableCell>
-              </TableRow>
+              <Row key={row.name} row={row}/>
             ))}
           </TableBody>
         </Table>

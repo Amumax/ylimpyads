@@ -60,6 +60,7 @@ const mergeEncodedQueries = (...encodedQueries: string[]) => encodedQueries.map(
 
 export default (apiUrl: string, httpClient = fetchUtils.fetchJson): DataProvider => ({
   getList: (resource, params) => {
+    console.log("fetching with params ");
     const { page, perPage } = params.pagination;
     const { q: queryParams, $OR: orFilter, ...filter } = params.filter || {};
 
