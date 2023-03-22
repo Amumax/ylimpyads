@@ -59,6 +59,9 @@ create table olimpiad_grades
     CONSTRAINT fk_olimpiad
         FOREIGN KEY(olimpiad)
             REFERENCES olimpiads(id) on delete cascade,
+    constraint fk_grade
+        foreign key (grades)
+            references grades (id) on delete cascade,
     constraint pk_olimpiad_grades
         primary key (olimpiad, grade)
 );
@@ -145,3 +148,22 @@ create table host_bonuses
         foreign key (bonus_type)
             references bonus_type(id) on delete cascade
 );
+
+create table grades
+(
+    id integer not null primary key,
+    name varchar
+);
+insert into table grades (id, name) values (1, '1');
+insert into table grades (id, name) values (2, '2');
+insert into table grades (id, name) values (3, '3');
+insert into table grades (id, name) values (4, '4');
+insert into table grades (id, name) values (5, '5');
+insert into table grades (id, name) values (6, '6');
+insert into table grades (id, name) values (7, '7');
+insert into table grades (id, name) values (8, '8');
+insert into table grades (id, name) values (9, '9');
+insert into table grades (id, name) values (10, '10');
+insert into table grades (id, name) values (11, '11');
+
+-- alter table olimpiad_grades add constraint fk_grade foreign key (grade) references grades (id) on delete cascade;
