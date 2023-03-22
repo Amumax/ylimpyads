@@ -4,6 +4,7 @@ import {Host} from "../../hosts/entities/host.entity";
 import {Events} from "../../event/entities/event.entity";
 import {Class} from "../../class/entities/class.entity";
 import {Profile} from "../../profile/entities/profile.entity";
+import { Grade } from 'src/grade/entities/grade.entity';
 
 @Entity({name: 'olimpiads'})
 export class Olimpiad extends BaseEntity {
@@ -46,6 +47,7 @@ export class Olimpiad extends BaseEntity {
     event: Events[];
     @RelationId((olimp: Olimpiad) => olimp.event)
     eventIds: number[];
+
     @ManyToMany(type => Class, {eager: true})
     @JoinTable({
         name: "olimpiad_classes",
@@ -64,6 +66,7 @@ export class Olimpiad extends BaseEntity {
     class: Class[];
     @RelationId((olimp: Olimpiad) => olimp.class)
     classIds: number[];
+
     @ManyToMany(type => Profile, {eager: true})
     @JoinTable({
         name: "olimpiad_profiles",
@@ -82,4 +85,23 @@ export class Olimpiad extends BaseEntity {
     profile: Profile[];
     @RelationId((olimp: Olimpiad) => olimp.profile)
     profileIds: number[];
+
+    @ManyToMany(type => Grade, {eager: true})
+    @JoinTable({
+        name: "olimpiad_grades",
+        joinColumn: {
+            name: "olimpiad",
+            referencedColumnName: "id",
+            foreignKeyConstraintName: "fk_olimpiad"
+        },
+        inverseJoinColumn: {
+            name: "grade",
+            referencedColumnName: "id",
+            foreignKeyConstraintName: "fk_grade"
+        }
+    })
+    @ApiProperty()
+    grade: Grade[];
+    @RelationId((olimp: Olimpiad) => olimp.grade)
+    gradeIds: number[];
 }

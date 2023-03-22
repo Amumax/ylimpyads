@@ -22,6 +22,8 @@ import {Profile} from "./profile/entities/profile.entity";
 import {Events} from "./event/entities/event.entity";
 import { BonusTypeModule } from './bonus_type/bonusType.module';
 import { HostBonusModule } from './host_bonus/hostBonus.module';
+import { GradeModule } from './grade/grade.module';
+import { Grade } from './grade/entities/grade.entity';
 
 AdminJS.registerAdapter({
     Resource: AdminJSTypeorm.Resource,
@@ -34,6 +36,7 @@ AdminJS.registerAdapter({
         EventModule,
         HostsModule,
         MajorModule,
+        GradeModule,
         OlimpiadModule,
         ProfileModule,
         BonusTypeModule,
@@ -50,7 +53,7 @@ AdminJS.registerAdapter({
             useFactory: () => ({
                 adminJsOptions: {
                     rootPath: '/admin',
-                    resources: [Class, Events, Host, Major, Olimpiad, Profile],
+                    resources: [Class, Events, Host, Major, Olimpiad, Grade, Profile],
                     databases: [AppDataSource],
                     locale: {
                         language: 'en',
@@ -61,7 +64,8 @@ AdminJS.registerAdapter({
                                 Host: 'Организаторы',
                                 Major: 'Специальность ВУЗ',
                                 Olimpiad: 'Олимпиады',
-                                Profile: 'Профили'
+                                Profile: 'Профили',
+                                Grade: 'Классы'
                             }
                         }
                     }
