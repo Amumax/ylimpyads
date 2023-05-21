@@ -1,4 +1,4 @@
-import { ChipField, Create, Datagrid, DateField, DateInput, Edit, EditButton, List, NumberField, NumberInput, ReferenceArrayField, ReferenceArrayInput, ReferenceInput, Show, SimpleForm, SimpleShowLayout, SingleFieldList, TextField, TextInput, UrlField, useRecordContext } from 'react-admin';
+import { ChipField, Create, Datagrid, DateField, DateInput, Edit, EditButton, List, NumberField, NumberInput, ReferenceArrayField, ReferenceArrayInput, ReferenceInput, Show, SimpleForm, SimpleShowLayout, SingleFieldList, SortButton, TextField, TextInput, UrlField, useRecordContext } from 'react-admin';
 
 const OlimpiadTitle = () => {
     const record = useRecordContext();
@@ -9,6 +9,7 @@ const OlimpiadFilters = [
     <TextInput source="name" label="Поиск" alwaysOn />,
     <ReferenceArrayInput source="hostIds" label="Организатор" reference="hosts" />,
     <NumberInput source="level" label="Уровень"/>,
+    // <SortButton fields={["name", "level", "rating"]} label="Сортировка"/>
     // <DateInput source="eventIds" label="Дата завершения" reference="events"/>
 ]
 

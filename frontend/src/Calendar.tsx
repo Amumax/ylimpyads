@@ -118,7 +118,7 @@ function fetchEvents(day: string, olimpiads: number[]) {
         .then((res : Event[]) => res)
         return eventsData;
     } else {
-        return fetch(API_URL+`/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&filter=olimps||$in||${olimpiads.join(',')}&join=olimpiad`)
+        return fetch(API_URL+`/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&filter=olimpiad||$in||${olimpiads.join(',')}&join=olimpiad`)
         .then(res => res.json())
         .then((res : Event[]) => res);
     }
@@ -310,7 +310,7 @@ function Row(props: { row: typeof Event}) {
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         > */}
 
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} >
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -336,8 +336,9 @@ function Row(props: { row: typeof Event}) {
               </Typography>
               <Typography component="legend">Уровень</Typography>
               <Rating name="read-only" value={4 - row.olimpiad.level}  max={3} readOnly />
-              <Typography component="legend">Рейтинг</Typography>
-              <Rating name="read-only" value={(row.olimpiad.rating/81)} precision={0.1} max={10} readOnly />
+              <Typography component="legend">Предметы</Typography>
+              {/* <Typography component="legend">Рейтинг</Typography>
+              <Rating name="read-only" value={((81 - row.olimpiad.rating)/10)} precision={0.1} max={10} readOnly /> */}
             </Box>
           </Collapse>
         </TableCell>
@@ -363,7 +364,8 @@ const MyResponsiveCalendarCanvas = () => {
         typeof value === 'string' ? value.split(',') : value,
       );
       setOlimpiads(
-        joinOlimpiadIds(getOlimpiadIds(classes, className), getOlimpiadIds(profiles, profileName))
+        getOlimpiadIds(classes, className)
+        // joinOlimpiadIds(getOlimpiadIds(classes, className), getOlimpiadIds(profiles, profileName))
       );
       fetchSchedule(olimpiads).then(rows => setSchedule(rows));
       console.log(olimpiads);
@@ -393,7 +395,7 @@ const MyResponsiveCalendarCanvas = () => {
     return (
     <div style={{ height: 600, width: 1080 }}>
           <div>
-        <FormControl sx={{ m: 1, width: 400 }}>
+        <FormControl sx={{ m: 1, width: 1080 }}>
           <InputLabel id="class-checkbox-label">Специальность</InputLabel>
           <Select
           labelId="class-checkbox-label"
@@ -415,8 +417,8 @@ const MyResponsiveCalendarCanvas = () => {
             </MenuItem>
           ))}
         </Select>
-        </FormControl>
-        <FormControl sx={{ m: 1, width: 400 }}>
+      </FormControl>
+        {/* <FormControl sx={{ m: 1, width: 400 }}>
           <InputLabel id="profile-checkbox-label">Профиль</InputLabel>
           <Select
           labelId="profile-checkbox-label"
@@ -438,7 +440,7 @@ const MyResponsiveCalendarCanvas = () => {
             </MenuItem>
           ))}
         </Select>
-        </FormControl>
+        </FormControl> */}
       </div>
     {/* <div
       className={css({
@@ -495,7 +497,7 @@ const MyResponsiveCalendarCanvas = () => {
           </TableHead>
           <TableBody>
             {eventsForDay.map(row => (
-              <Row key={row.name} row={row}/>
+              <Row key={row.id} row={row}/>
             ))}
           </TableBody>
         </Table>
