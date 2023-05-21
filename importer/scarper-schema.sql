@@ -1,3 +1,19 @@
+create table grades
+(
+    id integer not null primary key,
+    name varchar
+);
+insert into grades (id, name) values (1, '1');
+insert into grades (id, name) values (2, '2');
+insert into grades (id, name) values (3, '3');
+insert into grades (id, name) values (4, '4');
+insert into grades (id, name) values (5, '5');
+insert into grades (id, name) values (6, '6');
+insert into grades (id, name) values (7, '7');
+insert into grades (id, name) values (8, '8');
+insert into grades (id, name) values (9, '9');
+insert into grades (id, name) values (10, '10');
+insert into grades (id, name) values (11, '11');
 create table classes
 (
     id   integer not null primary key generated always as identity,
@@ -148,22 +164,5 @@ create table host_bonuses
         foreign key (bonus_type)
             references bonus_type(id) on delete cascade
 );
-
-create table grades
-(
-    id integer not null primary key,
-    name varchar
-);
-insert into grades (id, name) values (1, '1');
-insert into grades (id, name) values (2, '2');
-insert into grades (id, name) values (3, '3');
-insert into grades (id, name) values (4, '4');
-insert into grades (id, name) values (5, '5');
-insert into grades (id, name) values (6, '6');
-insert into grades (id, name) values (7, '7');
-insert into grades (id, name) values (8, '8');
-insert into grades (id, name) values (9, '9');
-insert into grades (id, name) values (10, '10');
-insert into grades (id, name) values (11, '11');
 
 -- alter table olimpiad_grades add constraint fk_grade foreign key (grade) references grades (id) on delete cascade;
