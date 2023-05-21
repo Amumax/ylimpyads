@@ -4,7 +4,7 @@ import {ApiProperty} from "@nestjs/swagger";
 
 @Entity({name: "grades"})
 export class Grade extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id: number;
     @Column({ type: "varchar"})
     name: string;

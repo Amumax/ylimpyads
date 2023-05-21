@@ -14,7 +14,10 @@ import { Crud, CrudController, CrudRequest, CrudRequestInterceptor, ParsedReques
   query: {
     join: {
       olimpiad: {
-        eager: false
+        eager: true
+      },
+      profile: {
+        eager: true
       }
     }
   }

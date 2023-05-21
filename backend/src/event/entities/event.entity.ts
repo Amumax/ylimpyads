@@ -14,6 +14,6 @@ export class Events extends BaseEntity {
     @ManyToOne((type) => Olimpiad, (olimp) => olimp.id)
     @JoinColumn({name: "olimpiad"})
     olimpiad: Olimpiad;
-    // @RelationId((evt: Events) => evt.olimpiad)
-    // olimpiadId: number;
+    @RelationId((evt: Events) => evt.olimpiad)
+    olimpiadId: number;
 }
