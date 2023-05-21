@@ -60,7 +60,7 @@ create table olimpiad_grades
         FOREIGN KEY(olimpiad)
             REFERENCES olimpiads(id) on delete cascade,
     constraint fk_grade
-        foreign key (grades)
+        foreign key (grade)
             references grades (id) on delete cascade,
     constraint pk_olimpiad_grades
         primary key (olimpiad, grade)
