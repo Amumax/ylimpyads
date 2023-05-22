@@ -4,7 +4,7 @@ import App from './App'
 import About from './components/About'
 
 import './index.css'
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Routes, Route} from 'react-router-dom';
 import MyResponsiveCalendarCanvas from './components/Calendar';
 import Login from "./components/Login";
 import Profile from "./components/Profile";
@@ -16,7 +16,7 @@ import OlimpiadList from "./components/List";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <BrowserRouter>
+        <HashRouter>
             <Routes>
                 <Route path='admin/*' element={<App/>}/>
                 <Route path='schedule' element={<MyResponsiveCalendarCanvas/>}/>
@@ -29,6 +29,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 <Route path="/" element={<Home/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
-        </BrowserRouter>
+        </HashRouter>
     </React.StrictMode>,
 )
