@@ -37,13 +37,13 @@ interface ScheduleDayDetailsDto {
     name: string;
     finish: string;
     start: string;
-};
+}
 
 interface GenericMap {
     id: number;
     name: string;
     olimpiadIds: number[];
-};
+}
 
 interface Olimpiad {
     id: number;
@@ -51,15 +51,15 @@ interface Olimpiad {
     url: string;
     rating: number;
     level: number;
-};
+}
 
-interface Event {
+interface OlimpiadEvent {
     id: number;
     name: string;
     start: Date;
     finish: Date;
     olimpiad: Olimpiad;
-};
+}
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -113,11 +113,11 @@ function fetchEvents(day: string, olimpiads: number[]) {
     if (olimpiads.length === 0) {
         return fetch(API_URL + `/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&join=olimpiad`)
             .then(res => res.json())
-            .then((res: Event[]) => res);
+            .then((res: OlimpiadEvent[]) => res);
     } else {
         return fetch(API_URL+`/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&filter=olimpiad||$in||${olimpiads.join(',')}&join=olimpiad`)
         .then(res => res.json())
-        .then((res : Event[]) => res);
+        .then((res : OlimpiadEvent[]) => res);
     }
 };
 
@@ -296,7 +296,7 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 //     );
 // };
 
-function Row(props: { row: typeof Event}) {
+function Row(props: { row: OlimpiadEvent}) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
 
@@ -346,7 +346,7 @@ function Row(props: { row: typeof Event}) {
 
 const MyResponsiveCalendarCanvas = () => {
     const [selectedDay, selectedDayChange] = useState('2022-09-01');
-    const [eventsForDay, eventsChanged] = useState<Event[]>([]);
+    const [eventsForDay, eventsChanged] = useState<OlimpiadEvent[]>([]);
 
     const [className, setClassName] = useState<string[]>([]);
     const [profileName, setProfileName] = useState<string[]>([]);
