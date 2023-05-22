@@ -1,4 +1,4 @@
-import { CalendarDatum, CalendarDayData, ResponsiveCalendar, ResponsiveCalendarCanvas } from '@nivo/calendar'
+import {ResponsiveCalendar} from '@nivo/calendar'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,26 +6,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React, { memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { useEventListener } from 'usehooks-ts'
-import { Loading, useDataProvider, useGetList } from 'react-admin';
-import crudProvider from 'ra-data-nestjsx-crud'
-import { Theme, useTheme } from '@mui/material/styles';
+import React, {useCallback, useState} from 'react';
+import {Theme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, {SelectChangeEvent} from '@mui/material/Select';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import Chip from '@mui/material/Chip';
 import Checkbox from '@mui/material/Checkbox';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
+import Navbar from "../Navbar";
+
 interface ScheduleDto {
     day: string;
     olimps: string[];
@@ -113,10 +111,9 @@ const initialSchedule = await fetch(API_URL+`/olimpiads/schedule`)
 
 function fetchEvents(day: string, olimpiads: number[]) {
     if (olimpiads.length === 0) {
-        const eventsData = fetch(API_URL+`/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&join=olimpiad`)
-        .then(res => res.json())
-        .then((res : Event[]) => res)
-        return eventsData;
+        return fetch(API_URL + `/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&join=olimpiad`)
+            .then(res => res.json())
+            .then((res: Event[]) => res);
     } else {
         return fetch(API_URL+`/events?filter=start%7C%7C%24lte%7C%7C${day}&filter=finish%7C%7C%24gte%7C%7C${day}&filter=olimpiad||$in||${olimpiads.join(',')}&join=olimpiad`)
         .then(res => res.json())
@@ -304,7 +301,7 @@ function Row(props: { row: typeof Event}) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <React.Fragment>
+        <React.Fragment>
         {/* <TableRow
           key={row.id}
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -393,6 +390,8 @@ const MyResponsiveCalendarCanvas = () => {
         [selectedDayChange]
       );
     return (
+        <body>
+        <Navbar />
     <div style={{ height: 600, width: 1080 }}>
           <div>
         <FormControl sx={{ m: 1, width: 1080 }}>
@@ -504,6 +503,10 @@ const MyResponsiveCalendarCanvas = () => {
       </TableContainer>    
     </div>
 </div>
+        <footer className="footer">
+            <p className="footer-by">Максим Найденов © 2023</p>
+        </footer>
+        </body>
     );
 }
 

@@ -7,13 +7,13 @@ import crudProvider from 'ra-data-nestjsx-crud'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './App.css'
-import { OlimpiadCreate, OlimpiadEdit, OlimpiadList, OlimpiadShow } from './Olimpiads';
-import { HostList } from './hosts';
-import { ClassCreate, ClassEdit, ClassList, ClassShow } from './classes';
-import { ProfileCreate, ProfileEdit, ProfileList, ProfileShow } from './profiles';
-import { EventList } from './events';
-import { MajorCreate, MajorEdit, MajorShow, MajorsList } from './major';
-import { BonusTypeCreate, BonusTypeEdit, BonusTypeList, BonusTypeShow } from './bonusType';
+import { OlimpiadCreate, OlimpiadEdit, OlimpiadList, OlimpiadShow } from './components/Admin/Olimpiads';
+import { HostList } from './components/Admin/hosts';
+import { ClassCreate, ClassEdit, ClassList, ClassShow } from './components/Admin/classes';
+import { ProfileCreate, ProfileEdit, ProfileList, ProfileShow } from './components/Admin/profiles';
+import { EventList } from './components/Admin/events';
+import { MajorCreate, MajorEdit, MajorShow, MajorsList } from './components/Admin/major';
+import { BonusTypeCreate, BonusTypeEdit, BonusTypeList, BonusTypeShow } from './components/Admin/bonusType';
 
 // const dataProvider = jsonServerProvider('http://localhost:3000')
 const dataProvider = crudProvider('http://localhost:3000');
