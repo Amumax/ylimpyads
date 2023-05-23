@@ -29,4 +29,5 @@ export class EventController implements CrudController<Events> {
   async getEventsForDay(@Param() params) {
     return this.service.getDayDetails(params.day, params.day, []);
   }
+
 }

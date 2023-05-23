@@ -13,7 +13,10 @@ export class OlimpiadService extends TypeOrmCrudService<Olimpiad> {
   ) {
     super(olimpiadRepository);
   }
-
+  // getForClass(classId: number) : Promise<Olimpiad[]> {
+  //   return this.repo.createQueryBuilder("olimpiad")
+  //       .leftJoinAndSelect("olimpiad")
+  // }
   getSchedule(start: Date, finish: Date, olimpIds: number[]): Promise<ScheduleDto> {
     if (start == null) {
       start = new Date('2022-09-01')

@@ -5,7 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Theme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -77,10 +77,6 @@ const classes = await fetch(API_URL+`/classes`)
     .then(res => res.json())
     .then((res: GenericMap[]) => res);
 
-const profiles = await fetch(API_URL+`/profiles`)
-    .then(res => res.json())
-    .then((res: GenericMap[]) => res);
-
 const CustomTooltip = (tip:any) => {
     if (tip.value === undefined) return null;
     return (
@@ -88,21 +84,7 @@ const CustomTooltip = (tip:any) => {
               {tip.day} : {tip.value} событий
           </span>
     )
-};
-const russianMonths = [
-    'Явн',
-    'Фев',
-    'Мар',
-    'Апр',
-    'Май',
-    'Июн',
-    'Июл',
-    'Авг',
-    'Сен',
-    'Окт',
-    'Ноя',
-    'Дек'
-];
+}
 
 const initialSchedule = await fetch(API_URL+`/olimpiads/schedule`)
     .then(res => res.json())
@@ -129,11 +111,7 @@ function fetchSchedule(olimpiads: number[]) {
         return fetch(API_URL+`/olimpiads/schedule?filter=olimps||$in||`+olimpiads.join(','))
             .then(res => res.json())
             .then((res: ScheduleDto[]) => res);
-};
-
-function joinOlimpiadIds(left: number[], right: number[]) {
-    return left.concat(right.filter(o => left.indexOf(o) === -1));
-};
+}
 
 function getOlimpiadIds(genericMap: GenericMap[], name: string | string[]) {
     console.log("Finding "+name+" in "+genericMap.map(o => o.name).join(','));
@@ -145,7 +123,7 @@ function getOlimpiadIds(genericMap: GenericMap[], name: string | string[]) {
             return p.concat(incoming.filter(o => p.indexOf(o) === -1));
         }
     }, []);
-};
+}
 
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
     return {
@@ -154,9 +132,9 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
                 ? theme.typography.fontWeightRegular
                 : theme.typography.fontWeightMedium,
     };
-};
+}
 
-function Row(props: { row: OlimpiadEvent}) {
+function Row(props: { row: Olimpiad}) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
 
@@ -178,11 +156,10 @@ function Row(props: { row: OlimpiadEvent}) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    <a href={'/admin/olimpiads/'+row.olimpiad.id+'/show'}>{row.olimpiad.name}</a>
+                    <a href={'/#/admin/olimpiads/'+row.id+'/show'}>{row.name}</a>
                 </TableCell>
                 <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.start.toString()}</TableCell>
-                <TableCell align="right">{row.finish.toString()}</TableCell>
+                <TableCell align="right">{row.rating}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -192,7 +169,7 @@ function Row(props: { row: OlimpiadEvent}) {
                                 Детали
                             </Typography>
                             <Typography component="legend">Уровень</Typography>
-                            <Rating name="read-only" value={4 - row.olimpiad.level}  max={3} readOnly />
+                            <Rating name="read-only" value={4 - row.level}  max={3} readOnly />
                             <Typography component="legend">Предметы</Typography>
                             {/* <Typography component="legend">Рейтинг</Typography>
               <Rating name="read-only" value={((81 - row.olimpiad.rating)/10)} precision={0.1} max={10} readOnly /> */}
@@ -205,11 +182,14 @@ function Row(props: { row: OlimpiadEvent}) {
 }
 
 const OlimpiadList = () => {
-    const [eventsForDay, eventsChanged] = useState<OlimpiadEvent[]>([]);
-
     const [className, setClassName] = useState<string[]>([]);
-    const [olimpiads, setOlimpiads] = useState<number[]>([]);
-    const [schedule, setSchedule] = useState<ScheduleDto[]>(initialSchedule);
+    const [olimpiads, setOlimpiads] = useState<Olimpiad[]>([]);
+
+    useEffect(() => {
+        fetch(API_URL+`/olimpiads`)
+            .then(res => res.json())
+            .then(res => setOlimpiads(res));
+    }, [])
 
     const handleClassChange = (event: SelectChangeEvent<typeof className>) => {
         const {
@@ -218,11 +198,9 @@ const OlimpiadList = () => {
         setClassName(
             typeof value === 'string' ? value.split(',') : value,
         );
-        setOlimpiads(
-            getOlimpiadIds(classes, className)
-            // joinOlimpiadIds(getOlimpiadIds(classes, className), getOlimpiadIds(profiles, profileName))
-        );
-        fetchSchedule(olimpiads).then(rows => setSchedule(rows));
+        fetch(API_URL+`/olimpiads?`)
+            .then(res => res.json())
+            .then(res => setOlimpiads(res));
         console.log(olimpiads);
     };
 
@@ -245,9 +223,7 @@ const OlimpiadList = () => {
                         MenuProps={MenuProps}
                     >
                         {classes.map((c) => (
-                            <MenuItem key={c.id} value={c.name}>
-                                <ListItemText primary={c.name} />
-                            </MenuItem>
+                            <MenuItem key={c.id} value={c.name}>{c.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -289,13 +265,11 @@ const OlimpiadList = () => {
                             <TableRow>
                                 <TableCell></TableCell>
                                 <TableCell>Олимпиада</TableCell>
-                                <TableCell align="right">Событие</TableCell>
-                                <TableCell align="right">Начало</TableCell>
-                                <TableCell align="right">Конец</TableCell>
+                                <TableCell align="right">Рейтинг</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {eventsForDay.map(row => (
+                            {olimpiads.map(row => (
                                 <Row key={row.id} row={row}/>
                             ))}
                         </TableBody>
