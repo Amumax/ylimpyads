@@ -13,6 +13,8 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import OlimpiadList from "./components/List";
+import Rules from "./components/Rules";
+import Usage from "./components/Usage";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
@@ -26,6 +28,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 <Route path="help" element={<Help/>}/>
                 <Route path="register" element={<Register/>}/>
                 <Route path="list" element={<OlimpiadList/>}/>
+                <Route path="rules" element={<Rules/>}/>
+                <Route path="usage" element={<Usage/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

@@ -1,6 +1,7 @@
 import '../../App.css'
 import Navbar from "../Navbar";
 import React from "react";
+import Footer from "../Footer";
 
 function About() {
     return (
@@ -16,9 +17,7 @@ function About() {
             олимпиадам для гарантии успешного результата. Это рабочее место и комфортная
             среда для будущих победителей и призеров.
             </span>
-        <footer className="footer">
-            <p className="footer-by">Максим Найденов © 2023</p>
-        </footer>
+        <Footer/>
         </body>
     )
 }

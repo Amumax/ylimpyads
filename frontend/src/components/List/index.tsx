@@ -22,6 +22,7 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
 import Navbar from "../Navbar";
+import Footer from "../Footer";
 
 interface ScheduleDto {
     day: string;
@@ -278,9 +279,7 @@ const OlimpiadList = () => {
                 </TableContainer>
             </div>
         </div>
-        <footer className="footer">
-            <p className="footer-by">Максим Найденов © 2023</p>
-        </footer>
+        <Footer/>
         </body>
     );
 }
