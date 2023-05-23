@@ -183,13 +183,18 @@ function Row(props: { row: Olimpiad}) {
 }
 
 const OlimpiadList = () => {
+    const [grades, setGrades] = useState<GenericMap[]>([]);
     const [className, setClassName] = useState<string[]>([]);
+    const [gradeName, setGradeName] = useState<string>('');
     const [olimpiads, setOlimpiads] = useState<Olimpiad[]>([]);
 
     useEffect(() => {
         fetch(API_URL+`/olimpiads`)
             .then(res => res.json())
             .then(res => setOlimpiads(res));
+        fetch(API_URL+`/grade`)
+            .then(res => res.json())
+            .then(res => setGrades(res))
     }, [])
 
     const handleClassChange = (event: SelectChangeEvent<typeof className>) => {
@@ -199,19 +204,27 @@ const OlimpiadList = () => {
         setClassName(
             typeof value === 'string' ? value.split(',') : value,
         );
-        console.log("Got value " + event.target.value)
         fetch(API_URL+`/olimpiads/forClass/`+value)
             .then(res => res.json())
             .then(res => setOlimpiads(res));
-        console.log(olimpiads);
+    };
+
+    const handleGradeChange = (event: SelectChangeEvent<typeof gradeName>) => {
+        const {
+            target: { value },
+        } = event;
+        setGradeName(value);
+        fetch(API_URL+`/olimpiads/forClass/`+className+`?grade=`+value)
+            .then(res => res.json())
+            .then(res => setOlimpiads(res));
     };
 
     return (
         <body>
         <Navbar />
-        <div style={{ height: 600, width: '95%' }}>
+        <div style={{ height: '100%', width: '95%' }}>
             <div>
-                <FormControl sx={{ m: 1, width: '95%' }}>
+                <FormControl sx={{ m: 1, minWidth: 320 }}>
                     <InputLabel id="class-checkbox-label">Предметы</InputLabel>
                     <Select
                         labelId="class-checkbox-label"
@@ -229,29 +242,23 @@ const OlimpiadList = () => {
                         ))}
                     </Select>
                 </FormControl>
-                {/* <FormControl sx={{ m: 1, width: 400 }}>
-          <InputLabel id="profile-checkbox-label">Профиль</InputLabel>
-          <Select
-          labelId="profile-checkbox-label"
-          id="profile-checkbox"
-          multiple
-          value={profileName}
-          onChange={(event) => {
-            handleProfileChange(event);
-            // fetchSchedule(olimpiads).then(rows => setSchedule(rows));
-          }}
-          input={<OutlinedInput label="Профиль" />}
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={MenuProps}
-        >
-          {profiles.map((c) => (
-            <MenuItem key={c.id} value={c.name}>
-              <Checkbox checked={profileName.indexOf(c.name) > -1} />
-              <ListItemText primary={c.name} />
-            </MenuItem>
-          ))}
-        </Select>
-        </FormControl> */}
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="class-checkbox-label">Класс</InputLabel>
+                    <Select
+                        labelId="grade-checkbox-label"
+                        id="grade-checkbox"
+                        value={gradeName}
+                        onChange={(event) => {
+                            handleGradeChange(event);
+                        }}
+                        input={<OutlinedInput label="Класс" />}
+                        MenuProps={MenuProps}
+                    >
+                        {grades.map((c) => (
+                            <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </div>
             {/* <div
       className={css({

@@ -13,13 +13,16 @@ export class OlimpiadService extends TypeOrmCrudService<Olimpiad> {
   ) {
     super(olimpiadRepository);
   }
-  getForClass(classId: number) : Promise<Olimpiad[]> {
-    return this.repo.createQueryBuilder("olimpiad")
-        .leftJoin("olimpiad.class", "class")
-        .where("olimpiad_class.class = :class", { class: classId})
-        .getMany()
+  getForClass(classId: number, grade: number) : Promise<Olimpiad[]> {
+      const builder = this.repo.createQueryBuilder("olimpiad")
+          .leftJoin("olimpiad.class", "class")
+          .leftJoin("olimpiad.grade", "grade")
+          .where("olimpiad_class.class = :class", {class: classId});
+      if (grade > 0)
+          builder.andWhere("olimpiad_grade.grade = :grade", {grade: grade})
+      return builder.getMany()
   }
-  getSchedule(start: Date, finish: Date, olimpIds: number[]): Promise<ScheduleDto> {
+    getSchedule(start: Date, finish: Date, olimpIds: number[]): Promise<ScheduleDto> {
     if (start == null) {
       start = new Date('2022-09-01')
     }

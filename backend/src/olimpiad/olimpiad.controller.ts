@@ -11,7 +11,7 @@ import {
   ParseIntPipe,
   Query,
   UseInterceptors,
-  ClassSerializerInterceptor
+  ClassSerializerInterceptor, Req
 } from '@nestjs/common';
 import { OlimpiadService } from './olimpiad.service';
 import { CreateOlimpiadDto } from './dto/create-olimpiad.dto';
@@ -74,8 +74,8 @@ export class OlimpiadController implements CrudController<Olimpiad> {
 
   // @UseInterceptors(CrudRequestInterceptor)
   @Get('/forClass/:class')
-  async getForClass(@Param() params) {
-    return this.service.getForClass(params.class);
+  async getForClass(@Req() req) {
+    return this.service.getForClass(req.params.class, req.query.grade);
   }
   @UseInterceptors(CrudRequestInterceptor)
   @Get('/forClass')
