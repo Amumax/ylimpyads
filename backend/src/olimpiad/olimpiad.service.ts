@@ -15,8 +15,8 @@ export class OlimpiadService extends TypeOrmCrudService<Olimpiad> {
   }
   getForClass(classId: number) : Promise<Olimpiad[]> {
     return this.repo.createQueryBuilder("olimpiad")
-        .leftJoin("olimpiad.profile", "profile")
-        .where("olimpiad_profile.profile = :profile", { profile: classId})
+        .leftJoin("olimpiad.class", "class")
+        .where("olimpiad_class.class = :class", { class: classId})
         .getMany()
   }
   getSchedule(start: Date, finish: Date, olimpIds: number[]): Promise<ScheduleDto> {
