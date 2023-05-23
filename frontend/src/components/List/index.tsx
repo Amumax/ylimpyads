@@ -198,7 +198,8 @@ const OlimpiadList = () => {
         setClassName(
             typeof value === 'string' ? value.split(',') : value,
         );
-        fetch(API_URL+`/olimpiads?`)
+        console.log("Got value " + event.target.value)
+        fetch(API_URL+`/olimpiads/forClass/`+value)
             .then(res => res.json())
             .then(res => setOlimpiads(res));
         console.log(olimpiads);
@@ -223,7 +224,7 @@ const OlimpiadList = () => {
                         MenuProps={MenuProps}
                     >
                         {classes.map((c) => (
-                            <MenuItem key={c.id} value={c.name}>{c.name}</MenuItem>
+                            <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

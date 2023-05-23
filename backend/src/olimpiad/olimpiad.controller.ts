@@ -72,4 +72,15 @@ export class OlimpiadController implements CrudController<Olimpiad> {
       olimps == null ? [] : olimps.value);
   }
 
+  // @UseInterceptors(CrudRequestInterceptor)
+  @Get('/forClass/:class')
+  async getForClass(@Param() params) {
+    return this.service.getForClass(params.class);
+  }
+  @UseInterceptors(CrudRequestInterceptor)
+  @Get('/forClass')
+  async getAllForClass(@ParsedRequest() req: CrudRequest) {
+    return this.service.getMany(req);
+  }
+
 }
